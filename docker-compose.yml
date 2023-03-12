@@ -37,6 +37,23 @@ services:
       MYSQL_ROOT_PASSWORD: todo_password
       SERVICE_TAGS: dev
       SERVICE_NAME: mysql
+    volumes:
+        - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: todo_user
+      PMA_PASSWORD: todo_password
+    depends_on:
+      - mysql
     networks:
       - laravel
 
@@ -110,4 +127,9 @@ services:
 #      - "1025:1025"
 #      - "8025:8025"
 #    networks:
-#      - laravel
+#      - laravel'
+
+volumes:
+    mysql_data:
+        driver: local
+
